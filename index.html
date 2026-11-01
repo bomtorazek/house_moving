@@ -250,6 +250,89 @@
       color: var(--gray-500);
     }
 
+    /* 시나리오 플랜 슬롯 바 */
+    .plan-slot-bar {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .slot-btn-group {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .slot-btn {
+      background: var(--gray-100);
+      border: 1px solid var(--gray-300);
+      color: var(--gray-700);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .slot-btn:hover {
+      background: var(--gray-200);
+      color: var(--gray-900);
+    }
+
+    .slot-btn.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+      box-shadow: 0 2px 4px rgba(30, 64, 175, 0.25);
+    }
+
+    .slot-actions {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn-slot-action {
+      background: white;
+      border: 1px solid var(--gray-300);
+      color: var(--gray-600);
+      padding: 5px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .btn-slot-action:hover {
+      background: var(--gray-50);
+      color: var(--gray-900);
+      border-color: var(--gray-400);
+    }
+
+    .btn-slot-action.btn-save {
+      color: var(--primary);
+      border-color: #bfdbfe;
+      background: var(--primary-light);
+    }
+
+    .btn-slot-action.btn-save:hover {
+      background: #dbeafe;
+    }
+
     /* 컨테이너 */
     main.container {
       max-width: 900px;
@@ -597,6 +680,161 @@
       font-size: 14px;
     }
 
+    /* ============================================================
+       라이트박스 모달 스타일
+       ============================================================ */
+    .lightbox-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .lightbox-content {
+      position: relative;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lightbox-img-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 100%;
+      max-height: 75vh;
+    }
+
+    .lightbox-img-wrapper img {
+      max-width: 85vw;
+      max-height: 75vh;
+      border-radius: var(--radius-md);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+      object-fit: contain;
+      background: #111;
+      transition: transform 0.2s ease;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: -46px;
+      right: 0;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      font-size: 28px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.1);
+    }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.3);
+      color: white;
+      border: none;
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      font-size: 22px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .lightbox-nav:hover {
+      background: white;
+      color: black;
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    .lightbox-nav.prev {
+      left: -20px;
+    }
+
+    .lightbox-nav.next {
+      right: -20px;
+    }
+
+    .lightbox-caption {
+      margin-top: 14px;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      text-align: center;
+      letter-spacing: -0.01em;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      max-width: 85vw;
+    }
+
+    .lightbox-dots {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .lightbox-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .lightbox-dot.active {
+      background: var(--accent);
+      width: 24px;
+      border-radius: 9999px;
+    }
+
+    /* 썸네일 클릭 가능 표시 */
+    .thumb-wrap, .single-thumb-box {
+      cursor: zoom-in;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .thumb-wrap:hover, .single-thumb-box:hover {
+      transform: scale(1.04);
+      box-shadow: var(--shadow-md);
+    }
+
     /* 인쇄 전용 영역 초기 숨김 */
     #print-document {
       display: none;
@@ -614,7 +852,8 @@
 
       header.dashboard-wrapper,
       main.container,
-      .print-btn {
+      .print-btn,
+      #lightbox-modal {
         display: none !important;
       }
 
@@ -827,6 +1066,21 @@
           <span id="gauge-status-text">한도 내 여유</span>
         </div>
       </div>
+
+      <!-- 협상 시나리오 플랜 슬롯 바 -->
+      <div class="plan-slot-bar">
+        <div class="slot-btn-group" id="slot-buttons">
+          <!-- JS 렌더링 -->
+        </div>
+        <div class="slot-actions">
+          <button class="btn-slot-action btn-save" onclick="saveCurrentToActiveSlot()" title="현재 품목 구성을 현재 플랜에 저장">
+            💾 현재 조합 저장
+          </button>
+          <button class="btn-slot-action" onclick="resetAllPlans()" title="기본 추천 플랜으로 초기화">
+            ↺ 초기화
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -866,6 +1120,20 @@
       </div>
     </section>
   </main>
+
+  <!-- 라이트박스 확대 모달 -->
+  <div id="lightbox-modal" class="lightbox-overlay" onclick="closeLightbox(event)">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+      <button class="lightbox-close" onclick="closeLightbox()" title="닫기 (ESC)">✕</button>
+      <div class="lightbox-img-wrapper">
+        <button class="lightbox-nav prev" id="lightbox-prev" onclick="changeLightboxImg(-1)" title="이전 이미지">‹</button>
+        <img id="lightbox-img" src="" alt="확대 이미지" />
+        <button class="lightbox-nav next" id="lightbox-next" onclick="changeLightboxImg(1)" title="다음 이미지">›</button>
+      </div>
+      <div class="lightbox-caption" id="lightbox-caption"></div>
+      <div class="lightbox-dots" id="lightbox-dots"></div>
+    </div>
+  </div>
 
   <!-- 인쇄 / PDF 저장 전용 공식 문서 템플릿 -->
   <div id="print-document">
@@ -920,9 +1188,9 @@
     // 1. 지원 한도 금액 (1,000만 원)
     const BUDGET_LIMIT = 10000000;
 
-    // 2. 초기 품목 데이터베이스
-    // imagePath는 image_assets/ 폴더를 바라보도록 설정되어 있습니다.
+    // 2. 초기 품목 데이터베이스 (정렬: 가전 -> 인테리어 -> 가구)
     const ALL_ITEMS = [
+      // ==================== [가전] ====================
       {
         id: "washer-dryer",
         name: "삼성전자 비스포크 그랑데 AI 세탁기(21kg) + 건조기(17kg)",
@@ -979,6 +1247,28 @@
         note: "85인치 초대형 거실 화면 / Mini LED 고화질"
       },
       {
+        id: "dishwasher-6",
+        name: "삼성전자 Bespoke 카운터탑 식기세척기 6인용",
+        model: "DW30FB300CW0 (화이트 / 방문설치)",
+        category: "가전",
+        regularPrice: 690000,
+        wowPrice: 550000,
+        imagePath: "image_assets/식기세척기_6인용.png",
+        link: "https://www.coupang.com/",
+        note: "싱크대 위 거치형 / 자동문열림 탑재"
+      },
+      {
+        id: "dishwasher-14",
+        name: "삼성전자 BESPOKE AI 빌트인 열풍건조 식기세척기 14인용",
+        model: "DW80F73X1UEW (에센셜화이트 / 빌트인)",
+        category: "가전",
+        regularPrice: 1910000,
+        wowPrice: 1040000,
+        imagePath: "image_assets/식기세척기_14인용.png",
+        link: "https://www.coupang.com/",
+        note: "하부장 매립 빌트인 / 14인용 열풍건조 대용량"
+      },
+      {
         id: "vacuum-dyson",
         name: "다이슨 v12s 디텍트 슬림 서브마린 컴플리트 무선청소기",
         model: "v12s Detect Slim Submarine Complete",
@@ -1001,16 +1291,29 @@
         note: "공기청정 + 선풍 듀얼 기능"
       },
       {
-        id: "cattower",
-        name: "집사의반격 캣포스트 기둥형 캣폴 캣타워 라운지하우스",
-        model: "기둥형 캣폴 캣타워 라운지하우스",
-        category: "가구",
-        regularPrice: 174000,
-        wowPrice: null,
-        imagePath: "image_assets/캣타워.jpeg",
-        link: "https://m.pet-friends.co.kr/product/detail/277868",
-        note: "펫프렌즈 기준 / 기둥형 캣폴"
+        id: "purifier-dyson-bigquiet",
+        name: "다이슨 빅 앤 콰이엇 공기청정기",
+        model: "Dyson Purifier Big+Quiet (헤파 H13 / 필터 수명 5년)",
+        category: "가전",
+        regularPrice: 840000,
+        wowPrice: 719000,
+        imagePath: "image_assets/공기청정기2.jpeg",
+        link: "https://www.google.com/aclk?sa=L&ai=DChsSEwji8_KwpeaXAxVn1xYFHSmDOe0YACICCAEQCRoCdGw&co=1&ase=2&gclid=CjwKCAjwxpvXBhASEiwAue4B4aJiZ8lrRqTltBwslMd2tW8hPdfR9S-HjNydsXm7ziA7509YaWIMKxoCZMoQAvD_BwE&cid=CAAS3QHkaAB12iV73Mz0NjRKP3GdkkOAkgtNq-CUEP2W23HPjd4DHjQmhiWDU3RWo1zC8HUQgH31dAx92qbS6wkOCZPRETOCIAamFuqqOcoquLe-ri1BYk3ofE9-8Nb3JhmOUFXXoEtpb6AxyJdXbE03HprmSjhGlYF9HWlHh5XxrsWQ-a5iakPnmOHXymPkBIhzIqPcelMdn6ZrELH5csCekWwVEeDE27oC_Ivh-va_0Ek4ABJflUKveIOAXfQFRmgtRnO5FvnIUaQ2yjyWJDIfiCLds0d4TU-cWMRsP_vwKQ&cce=2&category=acrcp_v1_32&sig=AOD64_3lQJIKfKnNenrj4nZZaGq0X1eSWA&ctype=5&q=&nis=4&ved=2ahUKEwispOywpeaXAxWsklYBHZefCOkQ5bgDKAB6BAgNEAs&adurl=",
+        note: "쿠팡 할인가 71.9만 / 대형 공간 초저소음 공기청정"
       },
+      {
+        id: "humidifier-airmade",
+        name: "에어메이드 가열식 스텐 가습기 더 문 4L",
+        model: "THE MOON AMH-401M (스테인리스 4L)",
+        category: "가전",
+        regularPrice: 339000,
+        wowPrice: null,
+        imagePath: "image_assets/가습기.jpg",
+        link: "https://shop.srookpay.com/kljcompany/Detail/SKL51527062",
+        note: "공구 특가 기준 / 가열식 스테인리스 통세척 가습기"
+      },
+
+      // ==================== [인테리어] ====================
       {
         id: "attic-flooring",
         name: "4층 다락 강마루 시공 및 도배",
@@ -1046,34 +1349,205 @@
         link: null,
         note: "기존 옐로우 손잡이 철거 / 모던 그레이 6개 자재비 및 교체 공임 포함"
       },
+
+      // ==================== [가구] ====================
       {
-        id: "dishwasher-6",
-        name: "삼성전자 Bespoke 카운터탑 식기세척기 6인용",
-        model: "DW30FB300CW0 (화이트 / 방문설치)",
-        category: "가전",
-        regularPrice: 690000,
-        wowPrice: 550000,
-        imagePath: "image_assets/식기세척기_6인용.png",
-        link: "https://www.coupang.com/",
-        note: "싱크대 위 거치형 / 자동문열림 탑재"
+        id: "cattower",
+        name: "집사의반격 캣포스트 기둥형 캣폴 캣타워 라운지하우스",
+        model: "기둥형 캣폴 캣타워 라운지하우스",
+        category: "가구",
+        regularPrice: 174000,
+        wowPrice: null,
+        imagePath: "image_assets/캣타워.jpeg",
+        link: "https://m.pet-friends.co.kr/product/detail/277868",
+        note: "펫프렌즈 기준 / 기둥형 캣폴"
       },
       {
-        id: "dishwasher-14",
-        name: "삼성전자 BESPOKE AI 빌트인 열풍건조 식기세척기 14인용",
-        model: "DW80F73X1UEW (에센셜화이트 / 빌트인)",
-        category: "가전",
-        regularPrice: 1910000,
-        wowPrice: 1040000,
-        imagePath: "image_assets/식기세척기_14인용.png",
-        link: "https://www.coupang.com/",
-        note: "하부장 매립 빌트인 / 14인용 열풍건조 대용량"
+        id: "cabinet-plain1200",
+        name: "[오늘의집 단독] 플레인 E0 높은 수납장 1200",
+        model: "플레인 E0 등급 높은 수납장 1200 (4colors)",
+        category: "가구",
+        regularPrice: 119900,
+        wowPrice: null,
+        imagePath: "image_assets/수납장.avif",
+        link: "https://store.ohou.se/goods/460765",
+        note: "오늘의집 단독 특가 / E0 친환경"
+      },
+      {
+        id: "display-cabinet-lunit",
+        name: "루니트 LED조명 장식장 WIDE TYPE (유리 일체형)",
+        model: "루니트 LED WIDE TYPE 유리 일체형 장식장",
+        category: "가구",
+        regularPrice: 194500,
+        wowPrice: null,
+        imagePath: "image_assets/장식장.avif",
+        link: "https://store.ohou.se/goods/1420977",
+        note: "오늘의집 기준 / LED 조명 내장 와이드 유리 장식장"
+      },
+      {
+        id: "table-nuvo-archive",
+        name: "누보 아카이브 테이블",
+        model: "누보(NUVO) 아카이브 디자인 테이블",
+        category: "가구",
+        regularPrice: 1230000,
+        wowPrice: null,
+        imagePath: "image_assets/아카이브테이블.avif",
+        link: "https://store.ohou.se/goods/3740450",
+        note: "오늘의집 기준 / 프리미엄 디자이너 식탁·테이블"
+      },
+      {
+        id: "closet-system1600",
+        name: "베이직 터치 1600 모듈 시스템 옷장 세트",
+        model: "베이직 터치 1600 모듈형 (옷장/이불장/서랍옷장)",
+        category: "가구",
+        regularPrice: 184900,
+        wowPrice: null,
+        imagePath: "image_assets/시스템옷장.avif",
+        link: "https://store.ohou.se/goods/3315607",
+        note: "오늘의집 기준 / 1600 규격 모듈 시스템 옷장 세트"
+      },
+      {
+        id: "mirror-izmir",
+        name: "IZMIR 이즈미르 선반형 우드 프레임 벽거울",
+        model: "IZMIR 우드 프레임 선반 일체형 디자인 벽거울",
+        category: "가구",
+        regularPrice: 86000,
+        wowPrice: null,
+        imagePath: "image_assets/벽거울.avif",
+        link: "https://store.ohou.se/goods/4170583",
+        note: "오늘의집 기준 / 원목 프레임 선반 일체형 벽거울"
       }
     ];
 
-    // 현재 선택된 목록 ID 순서 (기본: 세탁기+건조기, 키친핏 냉장고, 75인치 TV)
-    let selectedItemIds = ["washer-dryer", "fridge-kitchenfit", "tv-75"];
+    // 3. 시나리오 플랜 슬롯 관리 (Plan A, Plan B, Plan C 단순 명칭)
+    const DEFAULT_PLANS = [
+      {
+        id: "plan-a",
+        name: "Plan A",
+        itemIds: [],
+        isWow: false
+      },
+      {
+        id: "plan-b",
+        name: "Plan B",
+        itemIds: [],
+        isWow: false
+      },
+      {
+        id: "plan-c",
+        name: "Plan C",
+        itemIds: [],
+        isWow: false
+      }
+    ];
 
-    // 가격 계산 모드: false = 일반가 기준, true = 와우할인가 기준
+    let userPlans = [];
+    let activePlanId = "plan-a";
+
+    // 스토리지에서 플랜 불러오기 (v3으로 갱신하여 깔끔한 Plan A, B, C 적용)
+    function initPlans() {
+      try {
+        const savedPlans = localStorage.getItem('house_moving_plans_v3');
+        const savedActive = localStorage.getItem('house_moving_active_plan_v3');
+
+        if (savedPlans) {
+          userPlans = JSON.parse(savedPlans);
+        } else {
+          userPlans = JSON.parse(JSON.stringify(DEFAULT_PLANS));
+          savePlansToStorage();
+        }
+
+        if (savedActive && userPlans.some(p => p.id === savedActive)) {
+          activePlanId = savedActive;
+        } else {
+          activePlanId = userPlans[0].id;
+        }
+      } catch (e) {
+        userPlans = JSON.parse(JSON.stringify(DEFAULT_PLANS));
+        activePlanId = "plan-a";
+      }
+
+      loadActivePlanState();
+    }
+
+    function savePlansToStorage() {
+      try {
+        localStorage.setItem('house_moving_plans_v3', JSON.stringify(userPlans));
+        localStorage.setItem('house_moving_active_plan_v3', activePlanId);
+      } catch (e) {}
+    }
+
+    // 활성 플랜 상태를 현재 전역 변수에 로드
+    function loadActivePlanState() {
+      const currentPlan = userPlans.find(p => p.id === activePlanId) || userPlans[0];
+      selectedItemIds = [...currentPlan.itemIds];
+      isWowMode = !!currentPlan.isWow;
+
+      // 와우 스위치 UI 갱신
+      const switchEl = document.getElementById('price-toggle-switch');
+      const labelEl = document.getElementById('toggle-label-text');
+      if (switchEl && labelEl) {
+        if (isWowMode) {
+          switchEl.classList.add('active');
+          labelEl.textContent = '와우할인가 적용 중';
+          labelEl.style.color = 'var(--accent)';
+        } else {
+          switchEl.classList.remove('active');
+          labelEl.textContent = '일반가 기준';
+          labelEl.style.color = 'var(--gray-700)';
+        }
+      }
+    }
+
+    // 플랜 변경
+    function switchPlan(planId) {
+      activePlanId = planId;
+      loadActivePlanState();
+      savePlansToStorage();
+      renderPlanSlots();
+      renderApp();
+    }
+
+    // 현재 구성을 활성 플랜에 영구 저장
+    function saveCurrentToActiveSlot() {
+      const plan = userPlans.find(p => p.id === activePlanId);
+      if (!plan) return;
+
+      plan.itemIds = [...selectedItemIds];
+      plan.isWow = isWowMode;
+      savePlansToStorage();
+      renderPlanSlots();
+
+      alert(`✅ 현재 선택 구성이 [${plan.name}]에 저장되었습니다.`);
+    }
+
+    // 기본 플랜으로 초기화
+    function resetAllPlans() {
+      if (confirm('기본 추천 플랜(Plan A, B, C) 세팅으로 초기화하시겠습니까?')) {
+        userPlans = JSON.parse(JSON.stringify(DEFAULT_PLANS));
+        activePlanId = "plan-a";
+        savePlansToStorage();
+        loadActivePlanState();
+        renderPlanSlots();
+        renderApp();
+      }
+    }
+
+    // 플랜 슬롯 버튼 렌더링
+    function renderPlanSlots() {
+      const container = document.getElementById('slot-buttons');
+      if (!container) return;
+
+      container.innerHTML = userPlans.map(plan => `
+        <button class="slot-btn ${plan.id === activePlanId ? 'active' : ''}" onclick="switchPlan('${plan.id}')">
+          <span>${plan.id === activePlanId ? '✓' : '●'}</span>
+          <span>${plan.name}</span>
+        </button>
+      `).join('');
+    }
+
+    // 현재 선택된 목록 ID 순서 (기본 로드됨)
+    let selectedItemIds = [];
     let isWowMode = false;
 
     // 금액 천단위 포맷터
@@ -1098,6 +1572,13 @@
         labelEl.style.color = 'var(--gray-700)';
       }
 
+      // 현재 활성 플랜에도 즉시 반영
+      const plan = userPlans.find(p => p.id === activePlanId);
+      if (plan) {
+        plan.isWow = isWowMode;
+        savePlansToStorage();
+      }
+
       renderApp();
     }
 
@@ -1107,7 +1588,10 @@
         .map(id => ALL_ITEMS.find(item => item.id === id))
         .filter(Boolean);
 
-      const poolItems = ALL_ITEMS.filter(item => !selectedItemIds.includes(item.id));
+      const categoryOrder = { '가전': 1, '인테리어': 2, '가구': 3 };
+      const poolItems = ALL_ITEMS
+        .filter(item => !selectedItemIds.includes(item.id))
+        .sort((a, b) => (categoryOrder[a.category] || 99) - (categoryOrder[b.category] || 99));
 
       // 1. 합계 및 잔액 계산 (토글 상태에 따라 동적 계산)
       const totalCost = selectedItems.reduce((acc, cur) => {
@@ -1187,19 +1671,19 @@
           if (item.beforeImagePath) {
             thumbHtml = `
               <div class="dual-thumb-wrap">
-                <div class="single-thumb-box" title="현재 상태">
+                <div class="single-thumb-box" title="클릭하여 크게 보기 (현재 상태)" onclick="openLightbox('${item.id}', 0)">
                   <img src="${item.beforeImagePath}" alt="현재 상태">
-                  <span class="thumb-badge before">현재</span>
+                  <span class="thumb-badge before">현재 🔍</span>
                 </div>
-                <div class="single-thumb-box" title="시공 희망안">
+                <div class="single-thumb-box" title="클릭하여 크게 보기 (시공 희망안)" onclick="openLightbox('${item.id}', 1)">
                   <img src="${item.imagePath}" alt="시공 희망안">
-                  <span class="thumb-badge after">희망</span>
+                  <span class="thumb-badge after">희망 🔍</span>
                 </div>
               </div>
             `;
           } else {
             thumbHtml = `
-              <div class="thumb-wrap">
+              <div class="thumb-wrap" title="클릭하여 크게 보기" onclick="openLightbox('${item.id}', 0)">
                 <img src="${item.imagePath}" alt="${item.name}" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'thumb-placeholder\\'>${item.category}</div>';">
               </div>
             `;
@@ -1281,19 +1765,19 @@
           if (item.beforeImagePath) {
             thumbHtml = `
               <div class="dual-thumb-wrap">
-                <div class="single-thumb-box" title="현재 상태">
+                <div class="single-thumb-box" title="클릭하여 크게 보기 (현재 상태)" onclick="openLightbox('${item.id}', 0)">
                   <img src="${item.beforeImagePath}" alt="현재 상태">
-                  <span class="thumb-badge before">현재</span>
+                  <span class="thumb-badge before">현재 🔍</span>
                 </div>
-                <div class="single-thumb-box" title="시공 희망안">
+                <div class="single-thumb-box" title="클릭하여 크게 보기 (시공 희망안)" onclick="openLightbox('${item.id}', 1)">
                   <img src="${item.imagePath}" alt="시공 희망안">
-                  <span class="thumb-badge after">희망</span>
+                  <span class="thumb-badge after">희망 🔍</span>
                 </div>
               </div>
             `;
           } else {
             thumbHtml = `
-              <div class="thumb-wrap">
+              <div class="thumb-wrap" title="클릭하여 크게 보기" onclick="openLightbox('${item.id}', 0)">
                 <img src="${item.imagePath}" alt="${item.name}" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'thumb-placeholder\\'>${item.category}</div>';">
               </div>
             `;
@@ -1335,15 +1819,25 @@
     }
 
     // 아이템 추가/제거 및 순서 이동
+    function autoSyncActivePlan() {
+      const plan = userPlans.find(p => p.id === activePlanId);
+      if (plan) {
+        plan.itemIds = [...selectedItemIds];
+        savePlansToStorage();
+      }
+    }
+
     function addToSelected(id) {
       if (!selectedItemIds.includes(id)) {
         selectedItemIds.push(id);
+        autoSyncActivePlan();
         renderApp();
       }
     }
 
     function removeFromSelected(id) {
       selectedItemIds = selectedItemIds.filter(item => item !== id);
+      autoSyncActivePlan();
       renderApp();
     }
 
@@ -1353,6 +1847,7 @@
       const temp = selectedItemIds[index];
       selectedItemIds[index] = selectedItemIds[targetIndex];
       selectedItemIds[targetIndex] = temp;
+      autoSyncActivePlan();
       renderApp();
     }
 
@@ -1382,6 +1877,7 @@
         if (draggedIndex !== null && draggedIndex !== dropIndex) {
           const item = selectedItemIds.splice(draggedIndex, 1)[0];
           selectedItemIds.splice(dropIndex, 0, item);
+          autoSyncActivePlan();
           renderApp();
         }
       });
@@ -1399,10 +1895,12 @@
       }, 0);
       const remaining = BUDGET_LIMIT - totalCost;
 
-      // 오늘 날짜 표시
+      // 오늘 날짜 및 시나리오 플랜명 표시
       const today = new Date();
       const dateStr = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
-      document.getElementById('print-date').textContent = dateStr;
+      const curPlan = userPlans.find(p => p.id === activePlanId);
+      const planNameStr = curPlan ? curPlan.name : '';
+      document.getElementById('print-date').innerHTML = `${dateStr} <br><span style="color:#2563eb; font-weight:bold;">[${planNameStr}]</span>`;
 
       document.getElementById('print-sum-total').textContent = `${formatWon(totalCost)} (${isWowMode ? '와우할인가 기준' : '일반가 기준'})`;
       document.getElementById('print-sum-remaining').textContent = formatWon(remaining);
@@ -1453,7 +1951,107 @@
       window.print();
     }
 
+    // ============================================================
+    // 라이트박스 (확대 모달) 로직
+    // ============================================================
+    let activeLightboxImages = [];
+    let currentLightboxIdx = 0;
+
+    function openLightbox(itemId, initialIndex = 0) {
+      const item = ALL_ITEMS.find(i => i.id === itemId);
+      if (!item) return;
+
+      activeLightboxImages = [];
+      if (item.beforeImagePath) {
+        activeLightboxImages.push({
+          url: item.beforeImagePath,
+          caption: `[현재 상태] ${item.name}`
+        });
+        activeLightboxImages.push({
+          url: item.imagePath,
+          caption: `[시공 희망안] ${item.name}`
+        });
+      } else {
+        activeLightboxImages.push({
+          url: item.imagePath,
+          caption: item.name
+        });
+      }
+
+      currentLightboxIdx = Math.min(Math.max(initialIndex, 0), activeLightboxImages.length - 1);
+      renderLightboxView();
+
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden'; // 배경 스크롤 방지
+    }
+
+    function closeLightbox(e) {
+      if (e && e.target && e.target.closest('.lightbox-content') && !e.target.classList.contains('lightbox-close')) {
+        return;
+      }
+      const modal = document.getElementById('lightbox-modal');
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function changeLightboxImg(dir) {
+      if (activeLightboxImages.length <= 1) return;
+      currentLightboxIdx = (currentLightboxIdx + dir + activeLightboxImages.length) % activeLightboxImages.length;
+      renderLightboxView();
+    }
+
+    function setLightboxIdx(idx) {
+      currentLightboxIdx = idx;
+      renderLightboxView();
+    }
+
+    function renderLightboxView() {
+      const current = activeLightboxImages[currentLightboxIdx];
+      if (!current) return;
+
+      const imgEl = document.getElementById('lightbox-img');
+      imgEl.src = current.url;
+
+      const captionEl = document.getElementById('lightbox-caption');
+      captionEl.textContent = current.caption;
+
+      const prevBtn = document.getElementById('lightbox-prev');
+      const nextBtn = document.getElementById('lightbox-next');
+      const dotsEl = document.getElementById('lightbox-dots');
+
+      // 이미지가 2개 이상일 때만 좌우 이동 버튼 및 닷 인디케이터 표시
+      if (activeLightboxImages.length > 1) {
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
+        dotsEl.style.display = 'flex';
+        dotsEl.innerHTML = activeLightboxImages.map((_, i) => `
+          <div class="lightbox-dot ${i === currentLightboxIdx ? 'active' : ''}" onclick="setLightboxIdx(${i})"></div>
+        `).join('');
+      } else {
+        prevBtn.style.display = 'none';
+        nextBtn.style.display = 'none';
+        dotsEl.style.display = 'none';
+      }
+    }
+
+    // 키보드 네비게이션 (ESC 닫기, 좌우 화살표 넘김)
+    window.addEventListener('keydown', (e) => {
+      const modal = document.getElementById('lightbox-modal');
+      if (!modal.classList.contains('active')) return;
+
+      if (e.key === 'Escape') {
+        closeLightbox();
+      } else if (e.key === 'ArrowLeft') {
+        changeLightboxImg(-1);
+      } else if (e.key === 'ArrowRight') {
+        changeLightboxImg(1);
+      }
+    });
+
     // 초기 실행
+    initPlans();
+    renderPlanSlots();
     renderApp();
   </script>
 </body>

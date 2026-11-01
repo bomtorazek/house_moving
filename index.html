@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>마이너스 옵션 지원 품목 견적서</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #1e40af;
+      --primary-light: #eff6ff;
+      --primary-dark: #1e3a8a;
+      --accent: #2563eb;
+      --success: #16a34a;
+      --warning: #d97706;
+      --danger: #dc2626;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-300: #cbd5e1;
+      --gray-400: #94a3b8;
+      --gray-500: #64748b;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--gray-100);
+      color: var(--gray-800);
+      padding-bottom: 80px;
+      line-height: 1.5;
+    }
+
+    /* 상단 Sticky 헤더 및 대시보드 */
+    header.dashboard-wrapper {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--gray-200);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .header-content {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px 20px;
+    }
+
+    .title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+
+    .title-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      margin-bottom: 4px;
+    }
+
+    h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--gray-900);
+      letter-spacing: -0.02em;
+    }
+
+    .print-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--gray-900);
+      color: white;
+      border: none;
+      padding: 10px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .print-btn:hover {
+      background: var(--primary);
+      transform: translateY(-1px);
+    }
+
+    /* 와우할인 토글 버튼 스타일 */
+    .toggle-container {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: white;
+      border: 1px solid var(--gray-300);
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      user-select: none;
+      transition: all 0.2s ease;
+    }
+
+    .toggle-container:hover {
+      border-color: var(--primary);
+    }
+
+    .toggle-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--gray-700);
+    }
+
+    .toggle-switch {
+      width: 38px;
+      height: 22px;
+      background: var(--gray-300);
+      border-radius: 9999px;
+      position: relative;
+      transition: background-color 0.2s ease;
+    }
+
+    .toggle-switch.active {
+      background: var(--accent);
+    }
+
+    .toggle-knob {
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .toggle-switch.active .toggle-knob {
+      transform: translateX(16px);
+    }
+
+    /* 예산 카드 그리드 */
+    .budget-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      background: var(--gray-50);
+      padding: 12px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--gray-200);
+    }
+
+    .budget-item {
+      text-align: center;
+    }
+
+    .budget-label {
+      font-size: 12px;
+      color: var(--gray-500);
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .budget-value {
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--gray-900);
+    }
+
+    .budget-value.current {
+      color: var(--primary);
+    }
+
+    .budget-value.remaining {
+      color: var(--success);
+    }
+
+    .budget-value.over {
+      color: var(--danger);
+    }
+
+    /* 게이지 바 */
+    .gauge-wrapper {
+      margin-top: 10px;
+    }
+
+    .gauge-track {
+      width: 100%;
+      height: 8px;
+      background: var(--gray-200);
+      border-radius: 9999px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .gauge-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--primary));
+      transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s;
+      border-radius: 9999px;
+    }
+
+    .gauge-fill.warning {
+      background: linear-gradient(90deg, #f59e0b, #d97706);
+    }
+
+    .gauge-fill.danger {
+      background: linear-gradient(90deg, #ef4444, #dc2626);
+    }
+
+    .gauge-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--gray-500);
+    }
+
+    /* 컨테이너 */
+    main.container {
+      max-width: 900px;
+      margin: 20px auto 0;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* 섹션 공통 헤더 */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--gray-800);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .count-pill {
+      font-size: 12px;
+      font-weight: 700;
+      background: var(--gray-200);
+      color: var(--gray-700);
+      padding: 2px 8px;
+      border-radius: 9999px;
+    }
+
+    .count-pill.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .section-desc {
+      font-size: 13px;
+      color: var(--gray-500);
+    }
+
+    /* 카드 리스트 */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .item-card {
+      background: white;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .item-card:hover {
+      border-color: var(--gray-300);
+      box-shadow: var(--shadow-md);
+    }
+
+    .item-card.dragging {
+      opacity: 0.5;
+      background: var(--primary-light);
+      border: 2px dashed var(--accent);
+    }
+
+    /* 랭킹 뱃지 */
+    .rank-indicator {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-width: 38px;
+      height: 38px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .rank-indicator .num {
+      font-size: 15px;
+    }
+
+    /* 썸네일 이미지 */
+    .thumb-wrap {
+      width: 76px;
+      height: 76px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--gray-100);
+      flex-shrink: 0;
+      border: 1px solid var(--gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: white;
+    }
+
+    /* 듀얼 썸네일 비교 (현재 vs 희망) */
+    .dual-thumb-wrap {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .single-thumb-box {
+      width: 68px;
+      height: 76px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: white;
+      border: 1px solid var(--gray-200);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .single-thumb-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .thumb-badge {
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 4px;
+      border-radius: 3px;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+
+    .thumb-badge.before {
+      background: rgba(30, 41, 59, 0.85);
+      color: white;
+    }
+
+    .thumb-badge.after {
+      background: rgba(37, 99, 235, 0.9);
+      color: white;
+    }
+
+    .thumb-placeholder {
+      font-size: 11px;
+      color: var(--gray-400);
+      font-weight: 600;
+      text-align: center;
+      padding: 4px;
+    }
+
+    /* 카드 세부 내용 */
+    .card-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-tags {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .tag-category {
+      background: var(--gray-100);
+      color: var(--gray-600);
+    }
+
+    .tag-highlight {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .item-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gray-900);
+      margin-bottom: 6px;
+      line-height: 1.35;
+      word-break: keep-all;
+    }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .price-main {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--gray-900);
+    }
+
+    .price-sub {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      background: #eff6ff;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+
+    .item-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-size: 12px;
+      color: var(--gray-500);
+      text-decoration: none;
+      margin-top: 4px;
+      transition: color 0.15s;
+    }
+
+    .item-link:hover {
+      color: var(--primary);
+      text-decoration: underline;
+    }
+
+    /* 카드 액션 버튼 */
+    .card-actions {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .btn-action {
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 10px;
+      border-radius: 6px;
+      transition: all 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+    }
+
+    .btn-add {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-add:hover {
+      background: var(--primary-dark);
+    }
+
+    .btn-remove {
+      background: var(--gray-100);
+      color: var(--gray-600);
+    }
+
+    .btn-remove:hover {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    /* 순서 조정 버튼 (모바일 및 편리한 클릭 제어) */
+    .reorder-btns {
+      display: flex;
+      gap: 4px;
+    }
+
+    .btn-move {
+      background: var(--gray-100);
+      color: var(--gray-700);
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: bold;
+    }
+
+    .btn-move:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+
+    .btn-move:not(:disabled):hover {
+      background: var(--gray-200);
+      color: var(--gray-900);
+    }
+
+    .drag-handle {
+      color: var(--gray-400);
+      cursor: grab;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+    }
+
+    .drag-handle:active {
+      cursor: grabbing;
+    }
+
+    /* 빈 상태 안내 */
+    .empty-state {
+      background: white;
+      border: 1px dashed var(--gray-300);
+      border-radius: var(--radius-md);
+      padding: 32px 16px;
+      text-align: center;
+      color: var(--gray-400);
+      font-size: 14px;
+    }
+
+    /* 인쇄 전용 영역 초기 숨김 */
+    #print-document {
+      display: none;
+    }
+
+    /* ============================================================
+       A4 공식 견적서 인쇄 스타일 (@media print)
+       ============================================================ */
+    @media print {
+      body {
+        background: white !important;
+        color: black !important;
+        padding: 0 !important;
+      }
+
+      header.dashboard-wrapper,
+      main.container,
+      .print-btn {
+        display: none !important;
+      }
+
+      #print-document {
+        display: block !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 10mm 12mm !important;
+      }
+
+      .print-header {
+        border-bottom: 2px solid #000;
+        padding-bottom: 12px;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+      }
+
+      .print-title {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .print-meta {
+        font-size: 11px;
+        color: #444;
+        text-align: right;
+        line-height: 1.4;
+      }
+
+      .print-summary-box {
+        display: flex;
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+        border-radius: 4px;
+        margin-bottom: 16px;
+        padding: 10px 14px;
+        justify-content: space-between;
+      }
+
+      .print-summary-item {
+        font-size: 12px;
+      }
+
+      .print-summary-item strong {
+        font-size: 14px;
+        margin-left: 4px;
+      }
+
+      table.print-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+        margin-bottom: 20px;
+      }
+
+      table.print-table th,
+      table.print-table td {
+        border: 1px solid #ddd;
+        padding: 8px 6px;
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      table.print-table th {
+        background: #f0f4f8;
+        font-weight: 700;
+        text-align: center;
+      }
+
+      .print-thumb {
+        width: 44px;
+        height: 44px;
+        object-fit: contain;
+        display: block;
+        margin: 0 auto;
+      }
+
+      .print-dual-thumb {
+        display: flex;
+        gap: 3px;
+        justify-content: center;
+      }
+
+      .print-dual-thumb-item {
+        text-align: center;
+        font-size: 8px;
+        color: #555;
+      }
+
+      .print-dual-thumb-item img {
+        width: 32px;
+        height: 38px;
+        object-fit: cover;
+        display: block;
+        border: 1px solid #ccc;
+      }
+
+      .text-center { text-align: center !important; }
+      .text-right { text-align: right !important; }
+
+      .print-sign-box {
+        margin-top: 28px;
+        border-top: 1px solid #ccc;
+        padding-top: 16px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+      }
+
+      .sign-line {
+        margin-top: 32px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 40px;
+      }
+    }
+
+    /* 모바일 반응형 조절 */
+    @media (max-width: 640px) {
+      .header-content {
+        padding: 12px 14px;
+      }
+
+      h1 {
+        font-size: 18px;
+      }
+
+      .budget-value {
+        font-size: 15px;
+      }
+
+      .item-card {
+        padding: 12px;
+        gap: 10px;
+      }
+
+      .thumb-wrap {
+        width: 64px;
+        height: 64px;
+      }
+
+      .item-name {
+        font-size: 14px;
+      }
+
+      .price-main {
+        font-size: 14px;
+      }
+
+      .price-sub {
+        font-size: 11px;
+      }
+
+      .drag-handle {
+        display: none; /* 모바일은 버튼 중심 */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 상단 Sticky 대시보드 -->
+  <header class="dashboard-wrapper">
+    <div class="header-content">
+      <div class="title-row">
+        <div>
+          <div class="title-badge">마이너스 옵션 지원 협상안</div>
+          <h1>가전/가구 맞춤 견적서</h1>
+        </div>
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <!-- 와우할인가 계산 토글 스위치 -->
+          <div class="toggle-container" onclick="togglePriceMode()" title="클릭하여 일반가/와우할인가 전환">
+            <span class="toggle-label" id="toggle-label-text">일반가 기준</span>
+            <div class="toggle-switch" id="price-toggle-switch">
+              <div class="toggle-knob"></div>
+            </div>
+          </div>
+          <button class="print-btn" onclick="prepareAndPrint()">
+            🖨️ 인쇄 / PDF 저장
+          </button>
+        </div>
+      </div>
+
+      <!-- 예산 현황 요약 -->
+      <div class="budget-grid">
+        <div class="budget-item">
+          <div class="budget-label">지원 한도</div>
+          <div class="budget-value" id="disp-limit">10,000,000원</div>
+        </div>
+        <div class="budget-item">
+          <div class="budget-label">선택 품목 합계</div>
+          <div class="budget-value current" id="disp-total">0원</div>
+        </div>
+        <div class="budget-item">
+          <div class="budget-label">잔여 예산</div>
+          <div class="budget-value remaining" id="disp-remaining">10,000,000원</div>
+        </div>
+      </div>
+
+      <!-- 진행률 게이지 바 -->
+      <div class="gauge-wrapper">
+        <div class="gauge-track">
+          <div class="gauge-fill" id="gauge-bar"></div>
+        </div>
+        <div class="gauge-meta">
+          <span>예산 소진율: <strong id="gauge-percent">0%</strong></span>
+          <span id="gauge-status-text">한도 내 여유</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 메인 인터랙티브 영역 -->
+  <main class="container">
+    <!-- 1. 선택된 견적 리스트 (1지망부터 순서대로) -->
+    <section>
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">
+            📋 선택된 견적 목록 (지망 순위순)
+            <span class="count-pill active" id="selected-count">0</span>
+          </h2>
+          <p class="section-desc">위에서부터 1지망 순서입니다. 버튼이나 드래그로 순서를 바꿀 수 있습니다.</p>
+        </div>
+      </div>
+
+      <div class="card-list" id="selected-list">
+        <!-- JS 동적 렌더링 -->
+      </div>
+    </section>
+
+    <!-- 2. 교체 및 추가 후보군 (Pool) -->
+    <section>
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">
+            💡 교체 후보 품목 풀 (Wishlist)
+            <span class="count-pill" id="pool-count">0</span>
+          </h2>
+          <p class="section-desc">협상 상황에 맞춰 클릭 한 번으로 견적에 추가하거나 교체해보세요.</p>
+        </div>
+      </div>
+
+      <div class="card-list" id="pool-list">
+        <!-- JS 동적 렌더링 -->
+      </div>
+    </section>
+  </main>
+
+  <!-- 인쇄 / PDF 저장 전용 공식 문서 템플릿 -->
+  <div id="print-document">
+    <div class="print-header">
+      <div>
+        <div class="print-title">마이너스 옵션 가전/가구 지원 요청서</div>
+        <div style="font-size: 12px; color: #666; margin-top: 4px;">입주자 협의용 공식 품목 명세서</div>
+      </div>
+      <div class="print-meta">
+        <div><strong>작성일자:</strong> <span id="print-date"></span></div>
+        <div><strong>지원 한도:</strong> 10,000,000원</div>
+      </div>
+    </div>
+
+    <div class="print-summary-box">
+      <div class="print-summary-item">지원 한도: <strong>10,000,000원</strong></div>
+      <div class="print-summary-item">요청 품목 합계: <strong id="print-sum-total">0원</strong></div>
+      <div class="print-summary-item">잔여 한도(차액): <strong id="print-sum-remaining">0원</strong></div>
+      <div class="print-summary-item">총 품목 수: <strong id="print-sum-count">0개</strong></div>
+    </div>
+
+    <table class="print-table">
+      <thead>
+        <tr>
+          <th style="width: 36px;">순위</th>
+          <th style="width: 52px;">사진</th>
+          <th style="width: 60px;">구분</th>
+          <th>품명 및 세부 모델</th>
+          <th style="width: 95px;">일반 기준가</th>
+          <th style="width: 95px;">참고 할인가</th>
+          <th style="width: 110px;">비고</th>
+        </tr>
+      </thead>
+      <tbody id="print-table-body">
+        <!-- JS 렌더링 -->
+      </tbody>
+    </table>
+
+    <div class="print-sign-box">
+      <div>
+        <p>※ 상기 품목은 협의에 따라 우선순위대로 확정할 예정입니다.</p>
+        <p>※ 최저가 및 할인율은 구매 시점에 따라 소폭 변동될 수 있습니다.</p>
+      </div>
+      <div class="sign-line">
+        <div>협의자 (입주자): ____________ (인)</div>
+        <div>협의자 (담당자): ____________ (인)</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1. 지원 한도 금액 (1,000만 원)
+    const BUDGET_LIMIT = 10000000;
+
+    // 2. 초기 품목 데이터베이스
+    // imagePath는 image_assets/ 폴더를 바라보도록 설정되어 있습니다.
+    const ALL_ITEMS = [
+      {
+        id: "washer-dryer",
+        name: "삼성전자 비스포크 그랑데 AI 세탁기(21kg) + 건조기(17kg)",
+        model: "WF21CB6650BW + DV17CB6600BW (방문설치)",
+        category: "가전",
+        regularPrice: 1689000,
+        wowPrice: 1604550,
+        imagePath: "image_assets/세탁기.jpg",
+        link: "https://www.coupang.com/vp/products/8279277652?itemId=23868097582&vendorItemId=90891197855",
+        note: "방문설치 포함 / 쿠팡 기준"
+      },
+      {
+        id: "fridge-kitchenfit",
+        name: "[색상선택형] 삼성전자 Bespoke AI 키친핏 640L 4도어 냉장고",
+        model: "Bespoke AI 키친핏 640L (방문설치)",
+        category: "가전",
+        regularPrice: 2239000,
+        wowPrice: 2124580,
+        imagePath: "image_assets/냉장고_640.jpg",
+        link: "https://www.coupang.com/vp/products/8663232191?itemId=25198753734&vendorItemId=92195376630",
+        note: "주방 빌트인 규격 호환 / 방문설치"
+      },
+      {
+        id: "fridge-905l",
+        name: "삼성전자 Bespoke AI 905L 4도어 냉장고",
+        model: "Bespoke AI 905L 대용량 (방문설치)",
+        category: "가전",
+        regularPrice: 1612000,
+        wowPrice: 1520000,
+        imagePath: "image_assets/냉장고_905.jpg",
+        link: "https://www.coupang.com/vp/products/8734947909?itemId=25384283391&vendorItemId=92378167476",
+        note: "905L 대용량 프리스탠딩 (약 62만원 절감안)"
+      },
+      {
+        id: "tv-75",
+        name: "삼성전자 4K UHD Mini LED TV (75인치)",
+        model: "삼성전자 4K UHD Mini LED 75인치",
+        category: "가전",
+        regularPrice: 1390000,
+        wowPrice: 1310500,
+        imagePath: "image_assets/tv_75인치.avif",
+        link: "https://www.coupang.com/vp/products/9486705443?itemId=28250106935&vendorItemId=95203519077",
+        note: "75인치 대형 화면 / Mini LED 고화질"
+      },
+      {
+        id: "tv-85",
+        name: "삼성전자 4K UHD Mini LED TV (85인치)",
+        model: "삼성전자 4K UHD Mini LED 85인치",
+        category: "가전",
+        regularPrice: 1929320,
+        wowPrice: 1824820,
+        imagePath: "image_assets/tv_85인치.avif",
+        link: "https://www.coupang.com/vp/products/9486705443?itemId=28250106930&vendorItemId=95203519074",
+        note: "85인치 초대형 거실 화면 / Mini LED 고화질"
+      },
+      {
+        id: "vacuum-dyson",
+        name: "다이슨 v12s 디텍트 슬림 서브마린 컴플리트 무선청소기",
+        model: "v12s Detect Slim Submarine Complete",
+        category: "가전",
+        regularPrice: 774000,
+        wowPrice: 730250,
+        imagePath: "image_assets/청소기.jpeg",
+        link: "https://www.coupang.com/vp/products/7449656352?itemId=19391023099&vendorItemId=93526677358",
+        note: "공홈 기준가 77.4만 / 쿠팡 특가 73만"
+      },
+      {
+        id: "purifier-dyson",
+        name: "다이슨 쿨 공기청정기 TP07",
+        model: "Dyson Purifier Cool TP07",
+        category: "가전",
+        regularPrice: 549000,
+        wowPrice: null,
+        imagePath: "image_assets/공기청정기.jpeg",
+        link: "https://www.coupang.com/vp/products/7126890571?itemId=17857805597&vendorItemId=85021112562",
+        note: "공기청정 + 선풍 듀얼 기능"
+      },
+      {
+        id: "cattower",
+        name: "집사의반격 캣포스트 기둥형 캣폴 캣타워 라운지하우스",
+        model: "기둥형 캣폴 캣타워 라운지하우스",
+        category: "가구",
+        regularPrice: 174000,
+        wowPrice: null,
+        imagePath: "image_assets/캣타워.jpeg",
+        link: "https://m.pet-friends.co.kr/product/detail/277868",
+        note: "펫프렌즈 기준 / 기둥형 캣폴"
+      },
+      {
+        id: "attic-flooring",
+        name: "4층 다락 강마루 시공 및 도배",
+        model: "4층 다락(약 4평) 강마루 바닥 시공 및 벽면 도배 마감",
+        category: "인테리어",
+        regularPrice: 800000,
+        wowPrice: null,
+        imagePath: "image_assets/강마루.jpg",
+        link: null,
+        note: "자재비, 시공 인건비, 걸레받이 및 몰딩 마감 포함"
+      },
+      {
+        id: "terrace-door",
+        name: "테라스 출입구 알루미늄 시스템 단열 유리도어 시공",
+        model: "기존 철문 철거 + 슬림 알루미늄 단열 프레임 + 투명 로이복층유리 시공",
+        category: "인테리어",
+        regularPrice: 1500000,
+        wowPrice: null,
+        imagePath: "image_assets/유리문.jpg",
+        beforeImagePath: "image_assets/단열유리문.png",
+        link: null,
+        note: "기존 철문 철거 및 폐기 포함 / 투명 로이 복층유리 시스템 도어"
+      }
+    ];
+
+    // 현재 선택된 목록 ID 순서 (기본: 세탁기+건조기, 키친핏 냉장고, 75인치 TV)
+    let selectedItemIds = ["washer-dryer", "fridge-kitchenfit", "tv-75"];
+
+    // 가격 계산 모드: false = 일반가 기준, true = 와우할인가 기준
+    let isWowMode = false;
+
+    // 금액 천단위 포맷터
+    function formatWon(num) {
+      return num.toLocaleString('ko-KR') + "원";
+    }
+
+    // 와우할인 모드 토글
+    function togglePriceMode() {
+      isWowMode = !isWowMode;
+      
+      const switchEl = document.getElementById('price-toggle-switch');
+      const labelEl = document.getElementById('toggle-label-text');
+      
+      if (isWowMode) {
+        switchEl.classList.add('active');
+        labelEl.textContent = '와우할인가 적용 중';
+        labelEl.style.color = 'var(--accent)';
+      } else {
+        switchEl.classList.remove('active');
+        labelEl.textContent = '일반가 기준';
+        labelEl.style.color = 'var(--gray-700)';
+      }
+
+      renderApp();
+    }
+
+    // 대시보드 및 리스트 렌더링
+    function renderApp() {
+      const selectedItems = selectedItemIds
+        .map(id => ALL_ITEMS.find(item => item.id === id))
+        .filter(Boolean);
+
+      const poolItems = ALL_ITEMS.filter(item => !selectedItemIds.includes(item.id));
+
+      // 1. 합계 및 잔액 계산 (토글 상태에 따라 동적 계산)
+      const totalCost = selectedItems.reduce((acc, cur) => {
+        const itemPrice = isWowMode ? (cur.wowPrice || cur.regularPrice) : cur.regularPrice;
+        return acc + itemPrice;
+      }, 0);
+
+      const remaining = BUDGET_LIMIT - totalCost;
+      const percent = Math.min(Math.round((totalCost / BUDGET_LIMIT) * 100), 100);
+
+      // 2. 대시보드 업데이트
+      document.getElementById('disp-total').textContent = formatWon(totalCost);
+      const remEl = document.getElementById('disp-remaining');
+      remEl.textContent = formatWon(remaining);
+
+      if (remaining < 0) {
+        remEl.className = 'budget-value over';
+      } else {
+        remEl.className = 'budget-value remaining';
+      }
+
+      // 게이지 바
+      const gaugeBar = document.getElementById('gauge-bar');
+      gaugeBar.style.width = Math.min(Math.max(percent, 0), 100) + '%';
+      document.getElementById('gauge-percent').textContent = `${Math.round((totalCost / BUDGET_LIMIT) * 100)}%`;
+
+      const statusText = document.getElementById('gauge-status-text');
+      gaugeBar.className = 'gauge-fill';
+      if (remaining < 0) {
+        gaugeBar.classList.add('danger');
+        statusText.textContent = `한도 초과 (${formatWon(Math.abs(remaining))})`;
+        statusText.style.color = 'var(--danger)';
+      } else if (remaining < 1500000) {
+        gaugeBar.classList.add('warning');
+        statusText.textContent = `한도 근접 알림`;
+        statusText.style.color = 'var(--warning)';
+      } else {
+        statusText.textContent = isWowMode ? `와우할인 적용으로 예산 절감 중` : `한도 내 여유`;
+        statusText.style.color = isWowMode ? 'var(--accent)' : 'var(--gray-500)';
+      }
+
+      // 카운트 배지
+      document.getElementById('selected-count').textContent = selectedItems.length;
+      document.getElementById('pool-count').textContent = poolItems.length;
+
+      // 3. 선택 목록 렌더링
+      const selectedListEl = document.getElementById('selected-list');
+      selectedListEl.innerHTML = '';
+
+      if (selectedItems.length === 0) {
+        selectedListEl.innerHTML = `
+          <div class="empty-state">
+            현재 선택된 품목이 없습니다.<br>
+            아래 후보 품목에서 [견적에 추가]를 눌러 1지망부터 채워보세요.
+          </div>
+        `;
+      } else {
+        selectedItems.forEach((item, index) => {
+          const card = document.createElement('div');
+          card.className = 'item-card';
+          card.draggable = true;
+          card.dataset.id = item.id;
+          card.dataset.index = index;
+
+          const hasWowDiscount = item.wowPrice !== null && item.wowPrice !== undefined && item.wowPrice < item.regularPrice;
+          const currentPrice = (isWowMode && hasWowDiscount) ? item.wowPrice : item.regularPrice;
+          
+          let subPriceHtml = '';
+          if (hasWowDiscount) {
+            subPriceHtml = isWowMode
+              ? `<span class="price-sub">일반가 ${formatWon(item.regularPrice)}</span>`
+              : `<span class="price-sub">와우할인가 ${formatWon(item.wowPrice)}</span>`;
+          }
+
+          // 썸네일 HTML 생성 (단일 이미지 or 현재/희망 비교)
+          let thumbHtml = '';
+          if (item.beforeImagePath) {
+            thumbHtml = `
+              <div class="dual-thumb-wrap">
+                <div class="single-thumb-box" title="현재 상태">
+                  <img src="${item.beforeImagePath}" alt="현재 상태">
+                  <span class="thumb-badge before">현재</span>
+                </div>
+                <div class="single-thumb-box" title="시공 희망안">
+                  <img src="${item.imagePath}" alt="시공 희망안">
+                  <span class="thumb-badge after">희망</span>
+                </div>
+              </div>
+            `;
+          } else {
+            thumbHtml = `
+              <div class="thumb-wrap">
+                <img src="${item.imagePath}" alt="${item.name}" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'thumb-placeholder\\'>${item.category}</div>';">
+              </div>
+            `;
+          }
+
+          card.innerHTML = `
+            <div class="rank-indicator">
+              <span>지망</span>
+              <span class="num">${index + 1}</span>
+            </div>
+
+            ${thumbHtml}
+
+            <div class="card-info">
+              <div class="item-tags">
+                <span class="tag tag-category">${item.category}</span>
+              </div>
+              <div class="item-name">${item.name}</div>
+              <div class="price-row">
+                <span class="price-main">${formatWon(currentPrice)}</span>
+                ${subPriceHtml}
+              </div>
+              ${item.link ? `
+                <a href="${item.link}" target="_blank" class="item-link">
+                  🔗 상품 상세보기 ↗
+                </a>
+              ` : `
+                <span class="item-link" style="color: var(--gray-400); cursor: default;">
+                  🛠️ 현장 시공 협의 항목
+                </span>
+              `}
+            </div>
+
+            <div class="card-actions">
+              <div class="reorder-btns">
+                <button class="btn-action btn-move" onclick="moveItem(${index}, -1)" ${index === 0 ? 'disabled' : ''} title="위로">▲</button>
+                <button class="btn-action btn-move" onclick="moveItem(${index}, 1)" ${index === selectedItems.length - 1 ? 'disabled' : ''} title="아래로">▼</button>
+              </div>
+              <button class="btn-action btn-remove" onclick="removeFromSelected('${item.id}')">
+                ✕ 제외
+              </button>
+              <div class="drag-handle" title="드래그하여 순서 변경">⋮⋮</div>
+            </div>
+          `;
+
+          // Drag and drop 이벤트 바인딩
+          attachDragEvents(card);
+          selectedListEl.appendChild(card);
+        });
+      }
+
+      // 4. 후보군 풀 렌더링
+      const poolListEl = document.getElementById('pool-list');
+      poolListEl.innerHTML = '';
+
+      if (poolItems.length === 0) {
+        poolListEl.innerHTML = `
+          <div class="empty-state">
+            모든 후보 품목이 견적에 포함되어 있습니다.
+          </div>
+        `;
+      } else {
+        poolItems.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'item-card';
+
+          const hasWowDiscount = item.wowPrice !== null && item.wowPrice !== undefined && item.wowPrice < item.regularPrice;
+          const currentPrice = (isWowMode && hasWowDiscount) ? item.wowPrice : item.regularPrice;
+          
+          let subPriceHtml = '';
+          if (hasWowDiscount) {
+            subPriceHtml = isWowMode
+              ? `<span class="price-sub">일반가 ${formatWon(item.regularPrice)}</span>`
+              : `<span class="price-sub">와우할인가 ${formatWon(item.wowPrice)}</span>`;
+          }
+
+          // 썸네일 HTML 생성
+          let thumbHtml = '';
+          if (item.beforeImagePath) {
+            thumbHtml = `
+              <div class="dual-thumb-wrap">
+                <div class="single-thumb-box" title="현재 상태">
+                  <img src="${item.beforeImagePath}" alt="현재 상태">
+                  <span class="thumb-badge before">현재</span>
+                </div>
+                <div class="single-thumb-box" title="시공 희망안">
+                  <img src="${item.imagePath}" alt="시공 희망안">
+                  <span class="thumb-badge after">희망</span>
+                </div>
+              </div>
+            `;
+          } else {
+            thumbHtml = `
+              <div class="thumb-wrap">
+                <img src="${item.imagePath}" alt="${item.name}" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'thumb-placeholder\\'>${item.category}</div>';">
+              </div>
+            `;
+          }
+
+          card.innerHTML = `
+            ${thumbHtml}
+
+            <div class="card-info">
+              <div class="item-tags">
+                <span class="tag tag-category">${item.category}</span>
+              </div>
+              <div class="item-name">${item.name}</div>
+              <div class="price-row">
+                <span class="price-main">${formatWon(currentPrice)}</span>
+                ${subPriceHtml}
+              </div>
+              ${item.link ? `
+                <a href="${item.link}" target="_blank" class="item-link">
+                  🔗 상품 정보 보기 ↗
+                </a>
+              ` : `
+                <span class="item-link" style="color: var(--gray-400); cursor: default;">
+                  🛠️ 현장 시공 협의 항목
+                </span>
+              `}
+            </div>
+
+            <div class="card-actions">
+              <button class="btn-action btn-add" onclick="addToSelected('${item.id}')">
+                ➕ 견적에 추가
+              </button>
+            </div>
+          `;
+
+          poolListEl.appendChild(card);
+        });
+      }
+    }
+
+    // 아이템 추가/제거 및 순서 이동
+    function addToSelected(id) {
+      if (!selectedItemIds.includes(id)) {
+        selectedItemIds.push(id);
+        renderApp();
+      }
+    }
+
+    function removeFromSelected(id) {
+      selectedItemIds = selectedItemIds.filter(item => item !== id);
+      renderApp();
+    }
+
+    function moveItem(index, direction) {
+      const targetIndex = index + direction;
+      if (targetIndex < 0 || targetIndex >= selectedItemIds.length) return;
+      const temp = selectedItemIds[index];
+      selectedItemIds[index] = selectedItemIds[targetIndex];
+      selectedItemIds[targetIndex] = temp;
+      renderApp();
+    }
+
+    // PC 드래그 앤 드롭 구현
+    let draggedIndex = null;
+
+    function attachDragEvents(el) {
+      el.addEventListener('dragstart', (e) => {
+        draggedIndex = Number(el.dataset.index);
+        el.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      el.addEventListener('dragend', () => {
+        el.classList.remove('dragging');
+        draggedIndex = null;
+      });
+
+      el.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+      });
+
+      el.addEventListener('drop', (e) => {
+        e.preventDefault();
+        const dropIndex = Number(el.dataset.index);
+        if (draggedIndex !== null && draggedIndex !== dropIndex) {
+          const item = selectedItemIds.splice(draggedIndex, 1)[0];
+          selectedItemIds.splice(dropIndex, 0, item);
+          renderApp();
+        }
+      });
+    }
+
+    // 인쇄 준비 및 실행
+    function prepareAndPrint() {
+      const selectedItems = selectedItemIds
+        .map(id => ALL_ITEMS.find(item => item.id === id))
+        .filter(Boolean);
+
+      const totalCost = selectedItems.reduce((acc, cur) => {
+        const itemPrice = isWowMode ? (cur.wowPrice || cur.regularPrice) : cur.regularPrice;
+        return acc + itemPrice;
+      }, 0);
+      const remaining = BUDGET_LIMIT - totalCost;
+
+      // 오늘 날짜 표시
+      const today = new Date();
+      const dateStr = `${today.getFullYear()}년 ${today.getMonth() + 1}월 ${today.getDate()}일`;
+      document.getElementById('print-date').textContent = dateStr;
+
+      document.getElementById('print-sum-total').textContent = `${formatWon(totalCost)} (${isWowMode ? '와우할인가 기준' : '일반가 기준'})`;
+      document.getElementById('print-sum-remaining').textContent = formatWon(remaining);
+      document.getElementById('print-sum-count').textContent = `${selectedItems.length}개`;
+
+      const tbody = document.getElementById('print-table-body');
+      tbody.innerHTML = '';
+
+      selectedItems.forEach((item, idx) => {
+        const hasWowDiscount = item.wowPrice !== null && item.wowPrice !== undefined && item.wowPrice < item.regularPrice;
+        const wowDispText = hasWowDiscount ? formatWon(item.wowPrice) : '-';
+
+        let printImgHtml = '';
+        if (item.beforeImagePath) {
+          printImgHtml = `
+            <div class="print-dual-thumb">
+              <div class="print-dual-thumb-item">
+                <img src="${item.beforeImagePath}" alt="현재">
+                <span>[현재]</span>
+              </div>
+              <div class="print-dual-thumb-item">
+                <img src="${item.imagePath}" alt="희망">
+                <span>[희망]</span>
+              </div>
+            </div>
+          `;
+        } else {
+          printImgHtml = `<img class="print-thumb" src="${item.imagePath}" alt="${item.name}" onerror="this.style.display='none';">`;
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td class="text-center"><strong>${idx + 1}</strong></td>
+          <td class="text-center">${printImgHtml}</td>
+          <td class="text-center">${item.category}</td>
+          <td>
+            <strong>${item.name}</strong><br>
+            <span style="color: #666; font-size: 10px;">모델: ${item.model}</span>
+          </td>
+          <td class="text-right"><strong>${formatWon(item.regularPrice)}</strong></td>
+          <td class="text-right" style="${(isWowMode && hasWowDiscount) ? 'color: #1e40af; font-weight: bold; background: #f0f7ff;' : 'color: #1e40af;'}">${wowDispText}</td>
+          <td>${item.note || ''}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // 브라우저 기본 인쇄창 호출 (PDF로 저장 가능)
+      window.print();
+    }
+
+    // 초기 실행
+    renderApp();
+  </script>
+</body>
+</html>

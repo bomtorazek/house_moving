@@ -1074,10 +1074,10 @@
         </div>
         <div class="slot-actions">
           <button class="btn-slot-action btn-save" onclick="saveCurrentToActiveSlot()" title="현재 품목 구성을 현재 플랜에 저장">
-            💾 현재 조합 저장
+            💾 현재 플랜 저장
           </button>
-          <button class="btn-slot-action" onclick="resetAllPlans()" title="기본 추천 플랜으로 초기화">
-            ↺ 초기화
+          <button class="btn-slot-action" onclick="resetActivePlan()" title="현재 선택된 플랜의 품목을 모두 비웁니다">
+            ↺ 현재 플랜 초기화
           </button>
         </div>
       </div>
@@ -1173,13 +1173,9 @@
     </table>
 
     <div class="print-sign-box">
-      <div>
-        <p>※ 상기 품목은 협의에 따라 우선순위대로 확정할 예정입니다.</p>
-        <p>※ 최저가 및 할인율은 구매 시점에 따라 소폭 변동될 수 있습니다.</p>
-      </div>
-      <div class="sign-line">
-        <div>협의자 (입주자): ____________ (인)</div>
-        <div>협의자 (담당자): ____________ (인)</div>
+      <div style="font-size: 11px; color: #555; line-height: 1.6;">
+        <p>※ 상기 품목은 입주 전 마이너스 옵션 지원 협의에 따라 우선순위대로 확정할 예정입니다.</p>
+        <p>※ 실구매가 및 할인율은 구매 시점에 따라 소폭 변동될 수 있습니다.</p>
       </div>
     </div>
   </div>
@@ -1518,17 +1514,18 @@
       savePlansToStorage();
       renderPlanSlots();
 
-      alert(`✅ 현재 선택 구성이 [${plan.name}]에 저장되었습니다.`);
+      alert(`✅ [${plan.name}]에 현재 품목 구성이 저장되었습니다.`);
     }
 
-    // 기본 플랜으로 초기화
-    function resetAllPlans() {
-      if (confirm('기본 추천 플랜(Plan A, B, C) 세팅으로 초기화하시겠습니까?')) {
-        userPlans = JSON.parse(JSON.stringify(DEFAULT_PLANS));
-        activePlanId = "plan-a";
+    // 현재 선택된 플랜만 깨끗하게 초기화 (0개로 비우기)
+    function resetActivePlan() {
+      const plan = userPlans.find(p => p.id === activePlanId);
+      if (!plan) return;
+
+      if (confirm(`[${plan.name}]의 담긴 품목들을 모두 비우시겠습니까?`)) {
+        selectedItemIds = [];
+        plan.itemIds = [];
         savePlansToStorage();
-        loadActivePlanState();
-        renderPlanSlots();
         renderApp();
       }
     }
